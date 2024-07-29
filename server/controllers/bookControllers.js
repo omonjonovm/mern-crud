@@ -4,16 +4,16 @@ const Book =  require('../models/Book.model')
 //description : GET all books
 const getAllBooks = async (_,res) => {
   try {
-   const books  = ((await Book.find()).reverse())
-   if(!books) {
-    return res.json({message:'No data'})
-   }
-   return res.json({data:books,total:books.lenght})
+    const books = await Book.find()
+    res.status(200).json({
+      message:'success',
+      books:books.reverse()
+    })
   } catch (error) {
     res.send(error)
   }
 }
-
+` `
 //methods:   GET
 //description : GET one books by id
 const getBooksById  = async (req,res) => {
@@ -26,7 +26,7 @@ const getBooksById  = async (req,res) => {
     }
 
     return res.status(200).json({
-      message:'succes',
+      message:'success',
       book
     })
   } catch (error) {
@@ -63,8 +63,10 @@ const  updateBook  = async (req,res) => {
   try {
     const {title,description,image} = req.body
 
-    const updatedBook  = await Book.findByIdAndUpdate(req.params.id, req.body,{
-      new : true,
+    const updatedBook  = await Book.findByIdAndUpdate(req.params.id, {
+      title,
+      description,
+      image
     })
 
     res.status(200).json({
